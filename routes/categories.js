@@ -26,3 +26,26 @@ class Categorie extends Document{
     return 'categories';
   }
 }
+
+module.exports = app => {
+
+  let route = app.route('/categories');
+
+  route.get((req, res) =>{
+
+    db.find({}).sort({idCat:1}).exec((err, categorie) =>{
+
+      if (err){
+
+      } else {
+        res.statusCode = 200;
+        res.setHeader('content-type', 'application/json');
+        res.json({
+          categorie
+        });
+      }
+
+    });      
+  });
+
+};
