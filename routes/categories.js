@@ -48,4 +48,24 @@ module.exports = app => {
     });      
   });
 
+  route.post((req,res) => {
+
+    //req.body.childrensId == database.idCat || 
+    if (req.body.childrensId === []){
+      db.insert(req.body, (err, categorie) =>{
+        if (err) {
+      
+        } else {
+          res.status(200).json(categorie);
+        }
+      });  
+    } else {
+      res.status(400).json({
+        erro: "ChildrensId Incorreto"
+      });
+    }  
+  });
+
+  
+
 };
