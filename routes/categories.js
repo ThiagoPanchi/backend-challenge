@@ -66,6 +66,16 @@ module.exports = app => {
     }  
   });
 
-  
+  let routeId = app.route('/categories/:idCat');
+
+  routeId.get((req,res) => {
+    db.findOne({idCat:req.params.idCat}).exec((err, categorie) => {
+      if (err) {
+
+      } else {
+        res.status(200).json(categorie);
+      }
+    });
+  });
 
 };
