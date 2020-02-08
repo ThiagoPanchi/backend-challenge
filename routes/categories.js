@@ -16,7 +16,7 @@ class Categorie extends Document{
   constructor(){
     super();
 
-    this.idCat = Number;
+    this.id = Number;
     this.name = String;
     this.childrensId = [Number];
     this._id = String;      
@@ -33,16 +33,18 @@ module.exports = app => {
 
   route.get((req, res) =>{
 
-    db.find({}).sort({idCat:1}).exec((err, categorie) =>{
+    db.find({}).sort({id:1}).exec((err, categorie) =>{
 
       if (err){
-
+        console.log(`error: ${err}`);
+          res.status(400).json({
+            error: err
+          });
       } else {
         res.statusCode = 200;
         res.setHeader('content-type', 'application/json');
-        res.json({
-          categorie
-        });
+        res.json({ categorie });
+        res.send({'ok': true});
       }
 
     });      
@@ -50,30 +52,37 @@ module.exports = app => {
 
   route.post((req,res) => {
 
-    //req.body.childrensId == database.idCat || 
+    //req.body.childrensId == database.id || 
     if (req.body.childrensId === []){
       db.insert(req.body, (err, categorie) =>{
         if (err) {
-      
+          console.log(`error: ${err}`);
+          res.status(400).json({
+            error: err
+          });
         } else {
           res.status(200).json(categorie);
+          res.send({'ok': true});
         }
       });  
     } else {
-      res.status(400).json({
-        erro: "ChildrensId Incorreto"
-      });
+      res.status(400).json({ 'erro': 'ChildrensId Incorreto' });
+      res.send({'ok': false});
     }  
   });
 
-  let routeId = app.route('/categories/:idCat');
+  let routeId = app.route('/categories/:id');
 
   routeId.get((req,res) => {
-    db.findOne({idCat:req.params.idCat}).exec((err, categorie) => {
+    db.findOne({id:req.params.id}).exec((err, categorie) => {
       if (err) {
-
+        console.log(`error: ${err}`);
+        res.status(400).json({
+          error: err
+        });
       } else {
         res.status(200).json(categorie);
+        res.send({'ok': true});
       }
     });
   });
